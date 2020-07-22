@@ -621,7 +621,7 @@ void TsYScorer::OutputResult()
     //                          OutputResult
     //******************************************************************
     FILE* ydyfile;
-    ydyfile=fopen("ydy.txt","w");  
+    ydyfile=fopen(G4String(fOutFileName+"_ydy.txt"),"w");  
     for (G4int i=0;i<yBinNum;i++){
         fprintf(ydyfile,"%.4e keV/um",(BinLimit[i]+BinLimit[i+1])/2);
         fprintf(ydyfile,"   ");
@@ -631,7 +631,7 @@ void TsYScorer::OutputResult()
     fclose(ydyfile);
 
     FILE* ySpecfile;
-    ySpecfile=fopen("ySpecfile.txt","w"); 
+    ySpecfile=fopen(G4String(fOutFileName+"_ySpecfile.txt"),"w"); 
     if(IncludeYF){
         G4cout << "yF = " << yF <<" ( std: "<<yF_std<<")"<< " keV/um" << G4endl;
         fprintf(ySpecfile,"yF = %.4e (std: %.4e) keV/um\n",yF, yF_std);
@@ -661,7 +661,7 @@ void TsYScorer::OutputResult()
     if(fGetSecondariesContribution)
     {
         FILE* ySpec_particle;
-        ySpec_particle=fopen("ySpecfile_Particle.txt","w"); 
+        ySpec_particle=fopen(G4String(fOutFileName+"_ySpecfile_Particle.txt"),"w"); 
         fprintf(ySpec_particle,"y(keV/um)    e-           H            He           Li           Be           B            C            Other        Total[yd(y)]\n");
         
         for (G4int i=0;i<yBinNum;i++)
