@@ -475,7 +475,7 @@ void TsYScorer::InitializeMicrodosimetricSpectrum()
     for (G4int i=0; i<yBinNum; i++)
         hfy_particle[i] =new G4double [9];
 
-    BinLimit = new G4double [yBinNum] {0};
+    BinLimit = new G4double [yBinNum+1] {0};
     BinWidth = new G4double [yBinNum] {0};
 
     BinLimit[0]=0.1;
