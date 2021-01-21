@@ -48,6 +48,17 @@ TsYScorer::TsYScorer(TsParameterManager* pM, TsMaterialManager* mM, TsGeometryMa
 		G4String scorerName, G4String quantity, G4String outFileName, G4bool isSubScorer)
 : TsVNtupleScorer(pM, mM, gM, scM, eM, scorerName, quantity, outFileName, isSubScorer)//,n_count(0)
 {
+    // *************************** optional parameters ***************************
+    ylimitL = 0.1 ;  // in unit of keV/um
+    if ( fPm->ParameterExists(GetFullParmName("LinealEnergyLowerlimit")) ) {
+          ylimitL  =  fPm->GetUnitlessParameter(GetFullParmName("LinealEnergyLowerlimit"));
+    }
+
+    ylimitU = 1E4 ;  // in unit of keV/um
+    if ( fPm->ParameterExists(GetFullParmName("LinealEnergyUpperlimit")) ) {
+          ylimitU  =  fPm->GetUnitlessParameter(GetFullParmName("LinealEnergyUpperlimit"));
+    }
+
     InitializeMicrodosimetricSpectrum();
     yVector.clear();
     yVector_Particle.clear();
@@ -83,17 +94,6 @@ TsYScorer::TsYScorer(TsParameterManager* pM, TsMaterialManager* mM, TsGeometryMa
             SVheight=fPm->GetDoubleParameter(GetFullParmName("SensitiveVolumeHalfLength"),"Length");
     }
    
-
-    // *************************** optional parameters ***************************
-    ylimitL = 0 ;  // in unit of keV/um
-    if ( fPm->ParameterExists(GetFullParmName("LinealEnergyLowerlimit")) ) {
-          ylimitL  =  fPm->GetUnitlessParameter(GetFullParmName("LinealEnergyLowerlimit"));
-    }
-
-    ylimitU = 1E4 ;  // in unit of keV/um
-    if ( fPm->ParameterExists(GetFullParmName("LinealEnergyUpperlimit")) ) {
-          ylimitU  =  fPm->GetUnitlessParameter(GetFullParmName("LinealEnergyUpperlimit"));
-    }
 
     IncludeYF = true;
     if ( fPm->ParameterExists(GetFullParmName("IncludeFrequencyMeanLinealEnergy")) ) {
@@ -478,7 +478,7 @@ void TsYScorer::InitializeMicrodosimetricSpectrum()
     BinLimit = new G4double [yBinNum+1] {0};
     BinWidth = new G4double [yBinNum] {0};
 
-    BinLimit[0]=0.1;
+    BinLimit[0]=ylimitL;
     for (G4int i=0;i<yBinNum;i++){
         G4double aa = (double)((i+1)/yBinMagnitudeInterval);
         BinLimit[i+1] = pow(10,(aa -1.0));  
